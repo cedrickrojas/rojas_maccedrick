@@ -4,99 +4,417 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User/Update</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e293b, #0f172a); /* dark navy gradient */
+      font-family: 'Rajdhani', 'Arial Black', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #0f0f0f);
+      background-attachment: fixed;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      color: #e2e8f0;
+      min-height: 100vh;
+      color: #e5e5e5;
+      position: relative;
+    }
+
+    /* Dark grid overlay for industrial look */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: -1;
     }
 
     .form-container {
-      background: #1f2937;
-      padding: 30px 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      width: 360px;
-      animation: fadeIn 0.6s ease-in-out;
-      border: 1px solid #334155;
+      background: #1a1a1a;
+      padding: 40px 50px;
+      border: 2px solid #333;
+      box-shadow: 
+        0 15px 35px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      width: 420px;
+      animation: slideInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #4ade80, transparent);
+    }
+
+    .form-container::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #4ade80, transparent);
     }
 
     .form-container h1 {
       text-align: center;
-      margin-bottom: 20px;
-      font-size: 22px;
-      color: #38bdf8; /* cyan accent */
+      margin-bottom: 35px;
+      font-family: 'Orbitron', monospace;
+      font-size: 28px;
+      font-weight: 900;
+      color: #4ade80;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 
+        0 0 10px rgba(74, 222, 128, 0.5),
+        0 0 20px rgba(74, 222, 128, 0.3);
+      position: relative;
+    }
+
+    .form-container h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #4ade80, transparent);
     }
 
     label {
-      font-weight: 600;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
       display: block;
-      margin-top: 15px;
-      margin-bottom: 6px;
-      color: #94a3b8;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: #4ade80;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    label::before {
+      content: '▶';
+      margin-right: 8px;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 5px;
     }
 
     input[type="text"], input[type="email"] {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #334155;
-      border-radius: 10px;
+      padding: 16px 20px;
+      border: 2px solid #333;
+      border-radius: 0;
       outline: none;
-      transition: 0.3s;
-      font-size: 15px;
-      background: #0f172a;
-      color: #e2e8f0;
+      transition: all 0.3s ease;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      background: #0f0f0f;
+      color: #e5e5e5;
+      position: relative;
+    }
+
+    input[type="text"]::placeholder, input[type="email"]::placeholder {
+      color: #666;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 14px;
+    }
+
+    .input-group::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #4ade80, #22c55e);
+      transition: width 0.4s ease;
     }
 
     input[type="text"]:focus, input[type="email"]:focus {
-      border-color: #38bdf8;
-      box-shadow: 0px 0px 8px rgba(56,189,248,0.5);
+      border-color: #4ade80;
+      background: #1a1a1a;
+      box-shadow: 
+        0 0 20px rgba(74, 222, 128, 0.2),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .form-container .input-group:focus-within::before {
+      width: 100%;
+    }
+
+    .submit-container {
+      margin-top: 35px;
+      position: relative;
     }
 
     input[type="submit"] {
-      margin-top: 25px;
       width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8); /* bold blue */
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 25px;
+      padding: 18px;
+      background: linear-gradient(135deg, #333, #1a1a1a);
+      color: #4ade80;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: 2px solid #4ade80;
+      border-radius: 0;
       cursor: pointer;
-      box-shadow: 0 6px 12px rgba(37,99,235,0.4);
-      transition: 0.3s;
+      box-shadow: 
+        0 8px 20px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    input[type="submit"]::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(74,222,128,0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    input[type="submit"]:hover::before {
+      left: 100%;
     }
 
     input[type="submit"]:hover {
-      background: linear-gradient(135deg, #1e40af, #1d4ed8);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(37,99,235,0.6);
+      color: #000;
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      border-color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 
+        0 12px 25px rgba(0,0,0,0.5),
+        0 0 30px rgba(74, 222, 128, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.2);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    input[type="submit"]:active {
+      transform: translateY(-1px);
+      transition: transform 0.1s ease;
+    }
+
+    /* Glowing pulse animation for submit button */
+    @keyframes pulse-glow {
+      0%, 100% { 
+        box-shadow: 
+          0 8px 20px rgba(0,0,0,0.4),
+          inset 0 1px 0 rgba(255,255,255,0.1),
+          0 0 0 rgba(74, 222, 128, 0);
+      }
+      50% { 
+        box-shadow: 
+          0 8px 20px rgba(0,0,0,0.4),
+          inset 0 1px 0 rgba(255,255,255,0.1),
+          0 0 20px rgba(74, 222, 128, 0.2);
+      }
+    }
+
+    input[type="submit"] {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    input[type="submit"]:hover {
+      animation: none;
+    }
+
+    @keyframes slideInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(50px) scale(0.9); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+      }
+    }
+
+    /* Additional industrial elements */
+    .form-container .corner-accent {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #4ade80;
+    }
+
+    .form-container .corner-accent.top-left {
+      top: 15px;
+      left: 15px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .form-container .corner-accent.top-right {
+      top: 15px;
+      right: 15px;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    .form-container .corner-accent.bottom-left {
+      bottom: 15px;
+      left: 15px;
+      border-right: none;
+      border-top: none;
+    }
+
+    .form-container .corner-accent.bottom-right {
+      bottom: 15px;
+      right: 15px;
+      border-left: none;
+      border-top: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .form-container {
+        width: 95%;
+        padding: 30px 25px;
+      }
+      
+      .form-container h1 {
+        font-size: 24px;
+        letter-spacing: 2px;
+      }
+      
+      input[type="text"], input[type="email"] {
+        padding: 14px 16px;
+        font-size: 15px;
+      }
+      
+      input[type="submit"] {
+        padding: 16px;
+        font-size: 16px;
+        letter-spacing: 1px;
+      }
+    }
+
+    /* Focus states for accessibility */
+    input:focus {
+      outline: 2px solid #4ade80;
+      outline-offset: 2px;
+    }
+
+    /* Additional tech-inspired details */
+    .form-container .tech-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #333, transparent);
+      width: 100%;
+      left: 0;
+    }
+
+    .form-container .tech-line.top {
+      top: 60px;
+    }
+
+    .form-container .tech-line.bottom {
+      bottom: 80px;
+    }
+
+    /* Update-specific styling */
+    .user-id-display {
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid #4ade80;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      color: #4ade80;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .user-id-display::before {
+      content: '◀ USER ID: ';
+      color: #666;
+    }
+
+    /* Status indicator */
+    .status-indicator {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 12px;
+      height: 12px;
+      background: #4ade80;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+      animation: status-blink 2s ease-in-out infinite;
+    }
+
+    @keyframes status-blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.3; }
     }
   </style>
 </head>
 <body>
   <div class="form-container">
+    <div class="status-indicator"></div>
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent top-right"></div>
+    <div class="corner-accent bottom-left"></div>
+    <div class="corner-accent bottom-right"></div>
+    <div class="tech-line top"></div>
+    <div class="tech-line bottom"></div>
+    
     <h1>Update User</h1>
+    
+    <!-- User ID Display (simulated since we don't have the actual ID) -->
+    <div class="user-id-display">
+      Loading...
+    </div>
+    
     <form method="post" action="<?= site_url('user/update/'.$user['id']) ?>">
       <label for="username">Username</label>
-      <input type="text" name="username" id="username" value="<?= html_escape($user['username']) ?>" required>
+      <div class="input-group">
+        <input type="text" name="username" id="username" value="<?= html_escape($user['username']) ?>" placeholder="Enter username" required>
+      </div>
 
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" value="<?= html_escape($user['email']) ?>" required>
+      <label for="email">Email Address</label>
+      <div class="input-group">
+        <input type="email" name="email" id="email" value="<?= html_escape($user['email']) ?>" placeholder="Enter email address" required>
+      </div>
 
-      <input type="submit" value="Update User">
+      <div class="submit-container">
+        <input type="submit" value="◀ UPDATE USER ▶">
+      </div>
     </form>
   </div>
 </body>
