@@ -95,6 +95,18 @@
             text-transform: uppercase;
             text-shadow: 0 0 20px rgba(255,69,0,0.4);
             position: relative;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h2::after {
@@ -110,6 +122,23 @@
 
         .form-group {
             margin-bottom: 22px;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+        .form-group:nth-child(3) { animation-delay: 0.5s; }
+        .form-group:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         label {
@@ -209,6 +238,7 @@
             font-family: 'Rajdhani', sans-serif;
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 0.6s ease-out 0.7s both;
         }
 
         button::before {
@@ -278,11 +308,11 @@
     <div class="container">
         <h2>Register</h2>
         
-        <div class="error" id="errorMsg" style="display: none;">
-            Error message will appear here
-        </div>
+        <?php if (!empty($error)): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
 
-        <form method="post" action="#" onsubmit="return handleSubmit(event)">
+        <form method="post" action="<?= site_url('register') ?>">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required autocomplete="username" />
@@ -327,13 +357,6 @@
                 pwd.type = 'password';
                 toggle.textContent = 'Show';
             }
-        }
-
-        function handleSubmit(event) {
-            event.preventDefault();
-            // Add your form submission logic here
-            console.log('Form submitted');
-            return false;
         }
     </script>
 </body>
